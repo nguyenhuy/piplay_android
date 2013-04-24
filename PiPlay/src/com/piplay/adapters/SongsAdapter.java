@@ -34,7 +34,7 @@ public class SongsAdapter extends ArrayAdapter<Song> {
         }
 
         Song song = getItem(position);
-        viewHolder.title.setText(song.toString());
+        viewHolder.title.setText(song.getTitle());
 
         return convertView;
     }
