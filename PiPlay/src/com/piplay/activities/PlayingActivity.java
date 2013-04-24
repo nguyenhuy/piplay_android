@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.piplay.R;
+import com.piplay.fragments.PlayingSongsFragment;
 import com.piplay.fragments.ProgressDialogFragment;
 import com.piplay.fragments.SongsFragment;
 
@@ -15,7 +16,7 @@ import com.piplay.fragments.SongsFragment;
 public class PlayingActivity extends SherlockFragmentActivity
         implements SongsFragment.Listener {
 
-    private static final String TAG_SONGS_FRAGMENT = "songs_fragment";
+    private static final String TAG_SONGS_FRAGMENT = "playing_songs_fragment";
     private static final String TAG_PROGRESS_DIALOG_FRAGMENT =
             "progress_dialog_fragment";
 
@@ -23,10 +24,10 @@ public class PlayingActivity extends SherlockFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment songsFragment = new SongsFragment();
+        Fragment playingSongsFragment = new PlayingSongsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, songsFragment, TAG_SONGS_FRAGMENT)
+                .add(R.id.fragment_container, playingSongsFragment, TAG_SONGS_FRAGMENT)
                 .commit();
     }
 
