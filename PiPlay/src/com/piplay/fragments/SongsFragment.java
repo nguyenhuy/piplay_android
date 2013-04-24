@@ -106,12 +106,22 @@ public class SongsFragment extends SherlockListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Song song = (Song) getListAdapter().getItem(position);
-        try {
-            PiManager.addSong(song.getLink());
-        } catch (Exception e) {
+        final Song song = (Song) getListAdapter().getItem(position);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    PiManager.addSong(song.getLink());
+                } catch (Exception e) {
+                    Toast.makeText(
+                            getSherlockActivity(),
+                            e.getLocalizedMessage(),
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+        }).start();
 
-        }
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 import com.piplay.pojos.SongsResponse;
 import com.piplay.utils.Logger;
-import com.piplay.utils.NetworkUtil;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;

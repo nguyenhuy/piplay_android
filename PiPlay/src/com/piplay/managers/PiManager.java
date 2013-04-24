@@ -2,7 +2,6 @@ package com.piplay.managers;
 
 import android.text.TextUtils;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.piplay.utils.NetworkUtil;
 
 /**
  * Author: Huy Nguyen
