@@ -1,4 +1,4 @@
 piplay_android
 ==============
 
-Android client for PiPlay
+Android client that controls VLC via its HTTP server.
