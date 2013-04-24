@@ -1,7 +1,7 @@
 package com.piplay.tasks;
 
 import android.os.AsyncTask;
-import com.piplay.managers.ApiManager;
+import com.piplay.managers.ZingManager;
 import com.piplay.pojos.SongsResponse;
 
 /**
@@ -35,7 +35,7 @@ public class SearchSongsTask extends AsyncTask<Void, Void, SongsResponse> {
     @Override
     protected SongsResponse doInBackground(Void... voids) {
         try {
-            return ApiManager.searchSongs(mKeyword, mPage);
+            return ZingManager.searchSongs(mKeyword, mPage);
         } catch (Exception e) {
             mException = e;
             return null;

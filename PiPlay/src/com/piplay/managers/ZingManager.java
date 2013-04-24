@@ -6,6 +6,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 import com.piplay.pojos.SongsResponse;
 import com.piplay.utils.Logger;
+import com.piplay.utils.NetworkUtil;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.Mac;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Date: 4/24/13
  * Time: 11:39 AM
  */
-public class ApiManager {
+public class ZingManager {
 
     public static final String BASE_SEARCH_URL = "http://api.mp3.zing" +
             ".vn/api/search?jsondata=";
@@ -69,8 +70,7 @@ public class ApiManager {
         return new String(Hex.encodeHex(rawHmac));
     }
 
-    private static void validateResponse(HttpRequest request)
-            throws Exception {
+    private static void validateResponse(HttpRequest request) throws Exception {
         if (!request.ok()) {
             throw new Exception("Request failed with code: " + request.code());
         }

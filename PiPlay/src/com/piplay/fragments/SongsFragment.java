@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.piplay.R;
 import com.piplay.adapters.SongsAdapter;
+import com.piplay.managers.PiManager;
 import com.piplay.pojos.Song;
 import com.piplay.pojos.SongsResponse;
 import com.piplay.tasks.SearchSongsTask;
@@ -49,8 +51,7 @@ public class SongsFragment extends SherlockListFragment {
             if (mListener != null) {
                 mListener.hideProgress();
             }
-            if (response.getCount() == 0
-                    || response.getSongs().size() != response.getCount()) {
+            if (response.getCount() == 0 || response.getSongs().size() == 0) {
                 return;
             }
 
@@ -100,6 +101,17 @@ public class SongsFragment extends SherlockListFragment {
                 0,
                 new ArrayList<Song>());
         setListAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Song song = (Song) getListAdapter().getItem(position);
+        try {
+            PiManager.addSong(song.getLink());
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
