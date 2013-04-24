@@ -18,6 +18,8 @@ public class PiManager {
     private static final String COMMAND_PLAY = "in_play";
     private static final String COMMAND_STOP = "pl_stop";
     private static final String COMMAND_PAUSE = "pl_pause";
+    private static final String COMMAND_NEXT = "pl_next";
+    private static final String COMMAND_PREVIOUS = "pl_previous";
 
     private static void validateResponse(HttpRequest request) throws Exception {
         if (!request.ok()) {
@@ -47,6 +49,20 @@ public class PiManager {
     public static void pause() throws Exception {
         HttpRequest request = HttpRequest.get(BASE_URL, true,
                 PARAM_COMMAND, COMMAND_PAUSE);
+        validateResponse(request);
+        request.body();
+    }
+
+    public static void next() throws Exception {
+        HttpRequest request = HttpRequest.get(BASE_URL, true,
+                PARAM_COMMAND, COMMAND_NEXT);
+        validateResponse(request);
+        request.body();
+    }
+
+    public static void previous() throws Exception {
+        HttpRequest request = HttpRequest.get(BASE_URL, true,
+                PARAM_COMMAND, COMMAND_PREVIOUS);
         validateResponse(request);
         request.body();
     }

@@ -28,9 +28,11 @@ public class PlayingSongFragment extends SherlockFragment
 
         void playSong(Song song, TaskListener listener);
 
-        void nextSong();
+        void pauseSong(TaskListener listener);
 
-        void previousSong();
+        void nextSong(TaskListener listener);
+
+        void previousSong(TaskListener listener);
     }
 
     public static PlayingSongFragment newInstance(Song song) {
@@ -54,8 +56,6 @@ public class PlayingSongFragment extends SherlockFragment
             if (mListener != null) {
                 mListener.hideProgress();
             }
-            Command command = (Command) result;
-            // Nothing to do now
         }
 
         @Override
@@ -88,7 +88,9 @@ public class PlayingSongFragment extends SherlockFragment
         v.findViewById(R.id.ib_next).setOnClickListener(this);
 
         mIsPlaying = false;
-        togglePlayer();
+        if (mListener != null) {
+            mListener.playSong(mSong, mCommandTaskListener);
+        }
 
         return v;
     }
@@ -104,12 +106,12 @@ public class PlayingSongFragment extends SherlockFragment
         switch (view.getId()) {
             case R.id.ib_next:
                 if (mListener != null) {
-                    mListener.nextSong();
+                    mListener.nextSong(mCommandTaskListener);
                 }
                 break;
             case R.id.ib_previous:
                 if (mListener != null) {
-                    mListener.previousSong();
+                    mListener.previousSong(mCommandTaskListener);
                 }
                 break;
             case R.id.ib_play:
@@ -122,13 +124,13 @@ public class PlayingSongFragment extends SherlockFragment
 
     private void togglePlayer() {
         if (mListener != null) {
-            mListener.playSong(mSong, mCommandTaskListener);
+            mListener.pauseSong(mCommandTaskListener);
         }
         mIsPlaying = !mIsPlaying;
         if (mIsPlaying) {
-            mPlayBtn.setImageResource(R.drawable.button_play);
-        } else {
             mPlayBtn.setImageResource(R.drawable.button_pause);
+        } else {
+            mPlayBtn.setImageResource(R.drawable.button_play);
         }
     }
 

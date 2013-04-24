@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.piplay.R;
-import com.piplay.commands.AddSongCommand;
-import com.piplay.commands.Command;
+import com.piplay.commands.*;
 import com.piplay.fragments.PlayingSongFragment;
 import com.piplay.fragments.ProgressDialogFragment;
 import com.piplay.fragments.SongsFragment;
@@ -82,11 +81,21 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void nextSong() {
+    public void pauseSong(TaskListener listener) {
+        Command command = new PauseCommand();
+        startTask(new CommandTask(listener).execute(command));
     }
 
     @Override
-    public void previousSong() {
+    public void nextSong(TaskListener listener) {
+        Command command = new NextCommand();
+        startTask(new CommandTask(listener).execute(command));
+    }
+
+    @Override
+    public void previousSong(TaskListener listener) {
+        Command command = new PreviousCommand();
+        startTask(new CommandTask(listener).execute(command));
     }
 
     private void startTask(AsyncTask task) {
