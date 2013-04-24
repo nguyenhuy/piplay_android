@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.piplay.R;
-import com.piplay.commands.Command;
 import com.piplay.pojos.Song;
 import com.piplay.tasks.TaskListener;
 
@@ -87,10 +86,11 @@ public class PlayingSongFragment extends SherlockFragment
         v.findViewById(R.id.ib_previous).setOnClickListener(this);
         v.findViewById(R.id.ib_next).setOnClickListener(this);
 
-        mIsPlaying = false;
+        mIsPlaying = true;
         if (mListener != null) {
             mListener.playSong(mSong, mCommandTaskListener);
         }
+        mPlayBtn.setImageResource(R.drawable.button_pause);
 
         return v;
     }
