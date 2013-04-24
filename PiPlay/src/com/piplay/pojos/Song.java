@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class Song {
     @SerializedName("Title")
     private String title;
-    @SerializedName("LinkPlay128")
+    @SerializedName("LinkDownload128")
     private String link;
 
     public String getTitle() {
