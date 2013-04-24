@@ -126,6 +126,7 @@ public class SongsFragment extends SherlockListFragment {
         Song song = (Song) getListAdapter().getItem(position);
         Command command = new AddSongCommand(song.getLink());
         startTask(new CommandTask(mCommandTaskListener).execute(command));
+
     }
 
     @Override
