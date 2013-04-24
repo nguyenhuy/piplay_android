@@ -9,11 +9,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true">
 
-        <Button android:id="@+id/btn_search"
+        <ImageButton android:id="@+id/btn_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Search"/>
+                android:src="@drawable/abs__ic_search"/>
 
         <EditText android:id="@+id/et_keywork"
                   android:layout_width="match_parent"
