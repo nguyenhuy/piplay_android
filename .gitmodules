@@ -1,0 +1,6 @@
+[submodule "ActionBarSherlock"]
+	path = ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock.git
+[submodule "http-request"]
+	path = http-request
+	url = https://github.com/kevinsawicki/http-request.git

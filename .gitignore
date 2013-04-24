@@ -1,0 +1,15 @@
+*.DS_Store
+*.class
+*.classpath
+*.dex
+*.eml
+*.iml
+*.project
+*.swp
+.idea/
+.metadata
+/releases
+bin/
+gen/
+out/
+local.properties
