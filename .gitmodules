@@ -4,3 +4,6 @@
 [submodule "http-request"]
 	path = http-request
 	url = https://github.com/kevinsawicki/http-request.git
+[submodule "androidquery"]
+	path = androidquery
+	url = https://github.com/androidquery/androidquery.git
