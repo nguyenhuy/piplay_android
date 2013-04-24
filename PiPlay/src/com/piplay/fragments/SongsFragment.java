@@ -13,10 +13,13 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.piplay.R;
 import com.piplay.adapters.SongsAdapter;
-import com.piplay.managers.PiManager;
+import com.piplay.commands.AddSongCommand;
+import com.piplay.commands.Command;
 import com.piplay.pojos.Song;
 import com.piplay.pojos.SongsResponse;
+import com.piplay.tasks.CommandTask;
 import com.piplay.tasks.SearchSongsTask;
+import com.piplay.tasks.TaskListener;
 
 import java.util.ArrayList;
 
@@ -34,20 +37,25 @@ public class SongsFragment extends SherlockListFragment {
     }
 
     private EditText mKeywordEt;
-    private SearchSongsTask mTask;
+    private AsyncTask<?, ?, ?> mCurrentTask;
     private Listener mListener;
 
     private View.OnClickListener mSearchBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startSearchSongsTask();
+            startTask(
+                    new SearchSongsTask(
+                            mSearchSongsTaskListener,
+                            mKeywordEt.getText().toString(),
+                            0).execute());
         }
     };
 
-    private SearchSongsTask.Listener mSearchSongsTaskListener = new SearchSongsTask.Listener() {
+    private TaskListener mSearchSongsTaskListener = new TaskListener() {
 
         @Override
-        public void onFinished(SongsResponse response) {
+        public void onFinished(AsyncTask task, Object result) {
+            SongsResponse response = (SongsResponse) result;
             if (mListener != null) {
                 mListener.hideProgress();
             }
@@ -63,15 +71,24 @@ public class SongsFragment extends SherlockListFragment {
         }
 
         @Override
-        public void onException(Exception exc) {
-            Toast.makeText(
-                    getSherlockActivity(),
-                    exc.getLocalizedMessage(),
-                    Toast.LENGTH_LONG)
-                    .show();
+        public void onException(AsyncTask task, Exception exc) {
+            handleException(exc);
+        }
+    };
+
+    private TaskListener mCommandTaskListener = new TaskListener() {
+        @Override
+        public void onFinished(AsyncTask task, Object result) {
             if (mListener != null) {
                 mListener.hideProgress();
             }
+            Command command = (Command) result;
+            // Nothing to do now
+        }
+
+        @Override
+        public void onException(AsyncTask task, Exception exc) {
+            handleException(exc);
         }
     };
 
@@ -106,22 +123,9 @@ public class SongsFragment extends SherlockListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        final Song song = (Song) getListAdapter().getItem(position);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    PiManager.addSong(song.getLink());
-                } catch (Exception e) {
-                    Toast.makeText(
-                            getSherlockActivity(),
-                            e.getLocalizedMessage(),
-                            Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        }).start();
-
+        Song song = (Song) getListAdapter().getItem(position);
+        Command command = new AddSongCommand(song.getLink());
+        startTask(new CommandTask(mCommandTaskListener).execute(command));
     }
 
     @Override
@@ -130,23 +134,36 @@ public class SongsFragment extends SherlockListFragment {
         mListener = null;
     }
 
-    private void startSearchSongsTask() {
-        stopSearchSongsTask();
-        mTask = new SearchSongsTask(
-                mSearchSongsTaskListener,
-                mKeywordEt.getText().toString(),
-                0);
-        mTask.execute();
+    private void startTask(AsyncTask task) {
+        stopTask();
+        mCurrentTask = task;
         if (mListener != null) {
             mListener.showProgress();
         }
     }
 
-    private void stopSearchSongsTask() {
-        if (mTask != null && mTask.getStatus() != AsyncTask.Status.FINISHED) {
-            mTask.cancel(true);
-            mTask.setListener(null);
-            mTask = null;
+    private void stopTask() {
+        if (mCurrentTask != null && mCurrentTask.getStatus() != AsyncTask.Status.FINISHED) {
+            mCurrentTask.cancel(true);
+
+            if (mCurrentTask instanceof SearchSongsTask) {
+                ((SearchSongsTask) mCurrentTask).setListener(null);
+            } else if (mCurrentTask instanceof CommandTask) {
+                ((CommandTask) mCurrentTask).setListener(null);
+            }
+
+            mCurrentTask = null;
+        }
+    }
+
+    private void handleException(Exception exc) {
+        Toast.makeText(
+                getSherlockActivity(),
+                exc.getLocalizedMessage(),
+                Toast.LENGTH_LONG)
+                .show();
+        if (mListener != null) {
+            mListener.hideProgress();
         }
     }
 }

@@ -11,24 +11,18 @@ import com.piplay.pojos.SongsResponse;
  */
 public class SearchSongsTask extends AsyncTask<Void, Void, SongsResponse> {
 
-    public interface Listener {
-        void onFinished(SongsResponse response);
-
-        void onException(Exception exc);
-    }
-
-    private Listener mListener;
+    private TaskListener mListener;
     private String mKeyword;
     private int mPage;
     private Exception mException;
 
-    public SearchSongsTask(Listener listener, String keyword, int page) {
+    public SearchSongsTask(TaskListener listener, String keyword, int page) {
         this.mListener = listener;
         this.mKeyword = keyword;
         this.mPage = page;
     }
 
-    public void setListener(Listener listener) {
+    public void setListener(TaskListener listener) {
         this.mListener = listener;
     }
 
@@ -51,11 +45,11 @@ public class SearchSongsTask extends AsyncTask<Void, Void, SongsResponse> {
 
         if (mException != null) {
             if (mListener != null) {
-                mListener.onException(mException);
+                mListener.onException(this, mException);
             }
         } else if (songsResponse != null) {
             if (mListener != null) {
-                mListener.onFinished(songsResponse);
+                mListener.onFinished(this, songsResponse);
             }
         }
     }
