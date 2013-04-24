@@ -27,7 +27,8 @@ public class SongsAdapter extends ArrayAdapter<Song> {
         if (convertView == null) {
             convertView = View.inflate(getContext(), R.layout.item_song, null);
             viewHolder = new ViewHolder();
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.tv_title);
+            viewHolder.artist = (TextView) convertView.findViewById(R.id.tv_artist);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -35,11 +36,13 @@ public class SongsAdapter extends ArrayAdapter<Song> {
 
         Song song = getItem(position);
         viewHolder.title.setText(song.getTitle());
+        viewHolder.artist.setText(song.getArtist());
 
         return convertView;
     }
 
     private static class ViewHolder {
         TextView title;
+        TextView artist;
     }
 }

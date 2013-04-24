@@ -12,12 +12,16 @@ public class Song {
     private String title;
     @SerializedName("LinkDownload128")
     private String link;
-
+    @SerializedName("Artist")
+    private String artist;
     public String getTitle() {
         return title;
     }
 
     public String getLink() {
         return link;
+    }
+    public String getArtist(){
+        return artist;
     }
 }
